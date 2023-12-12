@@ -14,7 +14,7 @@ class UserBooksController extends Controller
      */
     public function index()
     {
-        $allbooks = Book::all();
+        $allbooks = UserBook::all();
         return $allbooks;
     }
 
@@ -23,7 +23,7 @@ class UserBooksController extends Controller
      */
     public function store(Request $request)
     {
-        $book = new Book();
+        $book = new UserBook();
         $book->book_id = $request->book_id;
         $book->user_id = $request->user_id;
         $book->point = $request->point;
@@ -45,7 +45,7 @@ class UserBooksController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $book = Book::findOrFail($id);
+        $book = UserBook::findOrFail($id);
         $book->book_id = $request->book_id;
         $book->user_id = $request->user_id;
         $book->point = $request->point;
@@ -59,7 +59,7 @@ class UserBooksController extends Controller
      */
     public function destroy(string $id)
     {
-        $book = Book::findOrFail($id);
+        $book = UserBook::findOrFail($id);
         $book->delete();
         return $book;
     }
