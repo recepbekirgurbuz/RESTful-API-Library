@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\UserBook;
 use Illuminate\Http\Request;
 
 class UserBooksController extends Controller
@@ -35,7 +36,7 @@ class UserBooksController extends Controller
      */
     public function show(string $user_id)
     {
-        $book = Book::where('user_id', $user_id)->get();
+        $book = UserBook::where('user_id', $user_id)->get();
         return $book;
     }
 
