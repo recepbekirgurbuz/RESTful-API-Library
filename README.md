@@ -1,7 +1,9 @@
 # Uygulama Hakkında Bilgi
 ### Bu proje nedir ?
 > Bir kütüphane api'sidir 
-
+### Sorgular 
+- [Postman](https://github.com/recepbekirgurbuz/RESTful-API-Library/blob/main/library.postman_collection.json) - Yapılan sorgular ve işlemler
+  
 ## Apinin içinde ne tür işlemler yapabiliyoruz
 
 #### Kullanıcı İşlemleri
