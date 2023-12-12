@@ -1,6 +1,6 @@
 # Uygulama Hakkında Bilgi
 ### Bu proje nedir ?
-> Bir kütüphane api'sidir
+> Bir kütüphane api'sidir 
 
 ## Apinin içinde ne tür işlemler yapabiliyoruz
 
@@ -31,4 +31,6 @@
 - php artisan db:seed
 ### server'ı başlatmak
 - php artisan serve
+  
+>  Tüm yönlendirmeleri api.php dosyasından görüntüleyebilirsiniz.
 
