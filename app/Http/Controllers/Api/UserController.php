@@ -15,12 +15,12 @@ class UserController extends Controller
         if  ($allUsers) {
             return response()->json([
                 'success' => true,
-                'Tüm Kullanıcılar' => $allUsers
+                'Kullanıcılar' => $allUsers
             ]);
         } else {
             return response()->json([
                 'success'=> false,
-                'message'=> 'Hiç kullanıcı oluşturulmamış'
+                'message'=> 'Kullanıcı oluşturulmamış'
             ]);
         }
     }

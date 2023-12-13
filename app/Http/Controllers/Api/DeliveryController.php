@@ -14,8 +14,18 @@ class UserBooksController extends Controller
      */
     public function listDeliveries()
     {
-        $allbooks = UserBook::all();
-        return $allbooks;
+        $allDelivery = UserBook::all();
+        if  ($allDelivery) {
+            return response()->json([
+                'success' => true,
+                'Ödünç Alınmış ve Alınan Kitaplar' => $allDelivery
+            ]);
+        } else {
+            return response()->json([
+                'success'=> false,
+                'message'=> 'Ödünç kitap alınmamış'
+            ]);
+        }
     }
 
     /**
@@ -23,12 +33,22 @@ class UserBooksController extends Controller
      */
     public function createDelivery(Request $request)
     {
-        $book = new UserBook();
-        $book->book_id = $request->book_id;
-        $book->user_id = $request->user_id;
-        $book->point = $request->point;
-        $book->delivery_date = $request->delivery_date;
-        $book->save();
+        $delivery = new UserBook();
+        $delivery->book_id = $request->book_id;
+        $delivery->user_id = $request->user_id;
+        $delivery->point = $request->point;
+        $delivery->delivery_date = $request->delivery_date;
+        $delivery->save();
+        if($delivery){
+            return response()->json([
+                'success' => true,
+                'book' => $delivery ->id,
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+            ]);
+        }
     }
 
     /**
@@ -36,8 +56,17 @@ class UserBooksController extends Controller
      */
     public function showDelivery(string $user_id)
     {
-        $book = UserBook::where('user_id', $user_id)->get();
-        return $book;
+        $delivery = UserBook::where('user_id', $user_id)->get();
+        if($delivery){
+            return response()->json([
+                'success' => true,
+                'book' => $delivery,
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+            ]);
+        }
     }
 
     /**
@@ -45,13 +74,23 @@ class UserBooksController extends Controller
      */
     public function updateDelivery(Request $request, string $id)
     {
-        $book = UserBook::findOrFail($id);
-        $book->book_id = $request->book_id;
-        $book->user_id = $request->user_id;
-        $book->point = $request->point;
-        $book->delivery_date = $request->delivery_date;
-        $book->update($request->all());
-        return $book;
+        $delivery = UserBook::findOrFail($id);
+        $delivery->book_id = $request->book_id;
+        $delivery->user_id = $request->user_id;
+        $delivery->point = $request->point;
+        $delivery->delivery_date = $request->delivery_date;
+        $delivery->update($request->all());
+        if($delivery->update()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Delivery verileri güncellendi'
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Maalesef delivery verileri güncellenemedi'
+            ]);
+        }
     }
 
     /**
@@ -59,8 +98,18 @@ class UserBooksController extends Controller
      */
     public function deleteDelivery(string $id)
     {
-        $book = UserBook::findOrFail($id);
-        $book->delete();
-        return $book;
+        $delivery = UserBook::findOrFail($id);
+        $delivery->delete();
+        if($delivery->delete()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Bu ödünç alınan kitap kaydı silindi'
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ödünç alınan kitap kaydı silinemedi'
+            ]);
+        }
     }
 }

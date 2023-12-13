@@ -18,7 +18,7 @@ class BooksController extends Controller
         if($allBooks->count() !== 0) {
             return response()->json([
                 'success' => true,
-                'Tüm Kitaplar' => $allBooks
+                'Kitaplar' => $allBooks
             ]);
         } else {
             return response()->json([
