@@ -12,7 +12,7 @@ class BooksController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function listBooks()
     {
         $allbooks = Book::all();
         return $allbooks;
@@ -21,7 +21,7 @@ class BooksController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function addBook(Request $request)
     {
         $book = new Book();
         $book->book_name = $request->book_name;
@@ -32,7 +32,7 @@ class BooksController extends Controller
     /**
      * kitap id si ile kitap bilgilerini çeker
      */
-    public function show(string $id)
+    public function showBook(string $id)
     {
         $book = Book::find($id);
         $averagePoint = UserBook::where('book_id', $id)->avg('point');
@@ -45,7 +45,7 @@ class BooksController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updateBook(Request $request, string $id)
     {
         $book = Book::findOrFail($id);
         $book->book_name = $request->book_name;
@@ -57,7 +57,7 @@ class BooksController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function deleteBook(string $id)
     {
         $book = Book::findOrFail($id);
         $book->delete();
