@@ -14,8 +14,19 @@ class BooksController extends Controller
      */
     public function listBooks()
     {
-        $allbooks = Book::all();
-        return $allbooks;
+        $allBooks = Book::all();
+        if($allBooks->count() !== 0) {
+            return response()->json([
+                'success' => true,
+                'Tüm Kitaplar' => $allBooks
+            ]);
+        } else {
+            return response()->json([
+                'success'=> false,
+                'message'=> 'Üzgünüz kayıtlı kitap bulunmuyor'
+            ]);
+        }
+
     }
 
     /**
@@ -27,6 +38,17 @@ class BooksController extends Controller
         $book->book_name = $request->book_name;
         $book->author = $request->author;
         $book->save();
+        if($book->save()) {
+            return response()->json([
+                'success' => true,
+                'message' => "Kitap başarıyla eklendi"
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => "Maalesef kitap eklenemedi"
+            ]);
+        }
     }
 
     /**
@@ -36,10 +58,17 @@ class BooksController extends Controller
     {
         $book = Book::find($id);
         $averagePoint = UserBook::where('book_id', $id)->avg('point');
-        return [
-            'book' => $book,
-            'averagePoint' => $averagePoint,
-        ];
+        if($book){
+            return response()->json([
+                'success' => true,
+                'book' => $book,
+                'averagePoint' => $averagePoint
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+            ]);
+        }
     }
 
     /**
@@ -51,7 +80,17 @@ class BooksController extends Controller
         $book->book_name = $request->book_name;
         $book->author = $request->author;
         $book->update($request->all());
-        return $book;
+        if($book->update()){
+            return response()->json([
+                'success' => true,
+                'message' => "kitap bilgileri başarıyla güncellendi"
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => "kitap bilgileri maalesef güncellenemedi"
+            ]);
+        }
     }
 
     /**
@@ -61,6 +100,16 @@ class BooksController extends Controller
     {
         $book = Book::findOrFail($id);
         $book->delete();
-        return $book;
+        if($book->delete()){
+            return response()->json([
+                'success' => true,
+                'message' => "kitap başarıyla silindi"
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => "kitap silinemedi"
+            ]);
+        }
     }
 }
