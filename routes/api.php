@@ -22,25 +22,25 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::controller(UserController::class)->group(function () {
-    Route::get('/users', 'index'); // tüm kullanıcıları listeler
-    Route::post('/user', 'store'); // yeni kullanıcı ekler
-    Route::get('/user/{id}', 'show'); // id ye sahip olan kullanıcıyı listeler
-    Route::put('/user/{id}', 'update'); // id ye sahip olan kullanıcı bilgilerini günceller
-    Route::delete('/user/{id}','destroy'); // id ye sahip olan kullanıcıyı siler
+    Route::get('/users', 'listUsers');
+    Route::post('/user', 'createUser');
+    Route::get('/user/{id}', 'showUser');
+    Route::put('/user/{id}', 'updateUser');
+    Route::delete('/user/{id}','deleteUser');
 });
 
 Route::controller(UserBooksController::class)->group(function () {
-    Route::get('/deliveries', 'index'); // kitap almış ve alan kişiler
-    Route::post('/delivery', 'store'); // kitap alacak kişinin girişi
-    Route::get('/delivery/{user_id}', 'show'); // kullanıcı id bilgisinden daha önceki aldığı kitapların hepsini listelemek
-    Route::put('/delivery/{id}', 'update'); // bir kullanıcının teslim ettiği kitaba değerlendirme puanı veya teslim tarihini uzatma işlemleri
-    Route::delete('/delivery/{id}','destroy'); // id'ye sahip olan kitap teslimatını sil
+    Route::get('/deliveries', 'listDeliveries');
+    Route::post('/delivery', 'createDelivery');
+    Route::get('/delivery/{user_id}', 'showDelivery');
+    Route::put('/delivery/{id}', 'updateDelivery');
+    Route::delete('/delivery/{id}','deleteDelivery');
 });
 
 Route::controller(BooksController::class)->group(function () {
-    Route::get('/books', 'index'); // kitapların tümünü listele
-    Route::post('/book', 'store'); // yeni kitap ekle
-    Route::get('/book/{id}', 'show'); // kitap id si ile kitap bilgilerini ve kitabın aldığı ortalama puanı hesaplar ekrana çıktı verir
-    Route::put('/book/{id}', 'update'); // kitap id si ile kitap bilgilerini günceller
-    Route::delete('/book/{id}', 'destroy'); // kitap id si ile kitap bilgilerini siler
+    Route::get('/books', 'listBooks');
+    Route::post('/book', 'addBook');
+    Route::get('/book/{id}', 'showBook');
+    Route::put('/book/{id}', 'updateBook');
+    Route::delete('/book/{id}', 'deleteBook');
 });
