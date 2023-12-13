@@ -9,13 +9,13 @@ use App\Models\User;
 class UserController extends Controller
 {
 
-    public function index()
+    public function listUsers()
     {
         $allusers = User::all();
         return $allusers;
     }
 
-    public function store(Request $request)
+    public function createUser(Request $request)
     {
         $user = new User();
         $user->name = $request->name;
@@ -26,13 +26,13 @@ class UserController extends Controller
         $user->save();
     }
 
-    public function show($id)
+    public function showUser($id)
     {
         $user = User::find($id);
         return $user;
     }
 
-    public function update(Request $request, $id)
+    public function updateUser(Request $request, $id)
     {
         $user = User::findOrFail($id);
         $user->name = $request->name;
@@ -44,7 +44,7 @@ class UserController extends Controller
         return $user;
     }
 
-    public function destroy($id)
+    public function deleteUser($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
