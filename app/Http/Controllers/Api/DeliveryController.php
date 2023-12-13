@@ -39,14 +39,15 @@ class UserBooksController extends Controller
         $delivery->point = $request->point;
         $delivery->delivery_date = $request->delivery_date;
         $delivery->save();
-        if($delivery){
+        if($delivery->save()){
             return response()->json([
                 'success' => true,
-                'book' => $delivery ->id,
+                'message' => 'Ödünç alma işlemi başarıyla gerçekleşti'
             ]);
         } else {
             return response()->json([
                 'success' => false,
+                'message' => 'Ödünç alma işlemi gerçekleşemedi'
             ]);
         }
     }

@@ -23,7 +23,7 @@ class BooksController extends Controller
         } else {
             return response()->json([
                 'success'=> false,
-                'message'=> 'Üzgünüz kayıtlı kitap bulunmuyor'
+                'message'=> 'Üzgünüz, kayıtlı kitap yok'
             ]);
         }
 
@@ -67,6 +67,7 @@ class BooksController extends Controller
         } else {
             return response()->json([
                 'success' => false,
+                'message'=> 'Üzgünüz böyle bir kitap bulunamadı'
             ]);
         }
     }
