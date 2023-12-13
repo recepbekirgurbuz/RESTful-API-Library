@@ -66,6 +66,7 @@ class UserBooksController extends Controller
         } else {
             return response()->json([
                 'success' => false,
+                'message'=> 'Ödünç kitap bulunamadı'
             ]);
         }
     }
