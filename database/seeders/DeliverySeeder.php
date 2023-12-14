@@ -17,6 +17,7 @@ class DeliverySeeder extends Seeder
             'book_id' => 1,
             'user_id' => 2,
             'point' => 5,
+            'status' => 'false',
             'delivery_date' => '2023-12-28',
         ]);
 
@@ -24,13 +25,15 @@ class DeliverySeeder extends Seeder
             'book_id' => 3,
             'user_id' => 2,
             'point' => 4,
-            'delivery_date' => '2023-12-18',
+            'status' => 'true',
+            'delivery_date' => '2023-12-8',
         ]);
 
         UserBook::create([
             'book_id' => 2,
             'user_id' => 1,
             'point' => 3,
+            'status' => 'true',
             'delivery_date' => '2023-12-8',
         ]);
     }
