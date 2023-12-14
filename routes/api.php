@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\BooksController;
 use App\Http\Controllers\Api\UserBooksController;
+use App\Http\Controllers\Api\UserDetailsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,4 +44,8 @@ Route::controller(BooksController::class)->group(function () {
     Route::get('/book/{id}', 'showBook');
     Route::put('/book/{id}', 'updateBook');
     Route::delete('/book/{id}', 'deleteBook');
+});
+
+Route::controller(UserDetailsController::class)->group(function () {
+    Route::get('/userdetails/{id}', 'userDetails');
 });
