@@ -29,8 +29,8 @@ class UserDetailsController extends Controller
                 'Kullanıcı Detayları'=> [
                     'Bilgileri'=> $user,
                     'Kullanıcı bu kitabı aldı ve hala teslim etmedi'=> [
-                        $deliveryDate,
                         $statusBookName,
+                        $deliveryDate,
                     ],
                     'Daha önce okuduğu kitaplar' => $deliveryBookName,
                 ]
