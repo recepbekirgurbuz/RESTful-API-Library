@@ -13,27 +13,26 @@ class UserDetailsController extends Controller
     public function userDetails($id) {
         $user = User::select('name', 'surname', 'tel')->find($id);
 
-        $delivery = UserBook::select('book_id', 'user_id', 'status')->where('user_id', $id)->where('status', 'true')->get();
-
         # $delivery den book_id sütununu aldım ve kitap id'sinden kitap adını çektim
-        $deliveryBookIds = $delivery->pluck('book_id');
-        $deliveryBookName = Book::select('book_name')->whereIn('id', $deliveryBookIds)->get();
+        $deliveryTrue = UserBook::select('book_id', 'user_id', 'status')->where('user_id', $id)->where('status', 'true')->get();
 
-        $deliveryDate = UserBook::select('delivery_date')->where('user_id', $id)->where('status', "false")->get();
-        $statusBookIds = UserBook::select('book_id')->where('user_id', $id)->where('status', "false")->get();
-        $statusBookName = Book::select('book_name')->whereIn('id', $statusBookIds)->get();
+        $deliveryBook = Book::select('book_name', 'author')->whereIn('id', $deliveryTrue->pluck('book_id'))->get();
+        $point = UserBook::select('point')->whereIn('id', $deliveryTrue->pluck('book_id'))->get();
+
+        $deliveryFalse = UserBook::select('book_id', 'delivery_date')->where('user_id', $id)->where('status', "false")->get();
+        $book = Book::select('book_name', 'author')->whereIn('id', $deliveryFalse->pluck('book_id'))->get();
 
         if($user) {
             return response()->json([
                 'success' => true,
-                'Kullanıcı Detayları'=> [
-                    'Bilgileri'=> $user,
-                    'Kullanıcı bu kitabı aldı ve hala teslim etmedi'=> [
-                        $statusBookName,
-                        $deliveryDate,
-                    ],
-                    'Daha önce okuduğu kitaplar' => $deliveryBookName,
-                ]
+                'Kullanıcı Bilgileri'=> $user,
+                'Kullanıcı bu kitabı aldı ve hala teslim etmedi' => [
+                    'kitap adı' => $book->pluck('book_name'),
+                    'son teslim tarihi' => $deliveryFalse->pluck('delivery_date'),
+                ],
+                'Daha önce okuduğu kitaplar' => [
+                    $deliveryBook->pluck('book_name', 'author'),
+                ],
             ]);
         }
     }
