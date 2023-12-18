@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\UserBook;
+use App\Models\Delivery;
 use App\Models\Book;
 
 class BooksController extends Controller
@@ -56,13 +56,22 @@ class BooksController extends Controller
      */
     public function showBook(string $id)
     {
-        $book = Book::find($id);
-        $averagePoint = UserBook::where('book_id', $id)->avg('point');
+        $book = Book::select('book_name', 'author')->find($id);
+        $averagePoint = Delivery::where('book_id', $id)->avg('point');
+
+        $status = Delivery::where('book_id', $id)->where('status', 'false')->get();
+        if ($status->count() > 0) {
+            $status = 'Kitap teslim edilmedi, Alınmaya uygun değil';
+        } else {
+            $status = 'Kitap teslim edilmiş, Alınmaya uygun';
+        }
+
         if($book){
             return response()->json([
                 'success' => true,
                 'book' => $book,
-                'averagePoint' => $averagePoint
+                'averagePoint' => $averagePoint,
+                'delivery_status' => $status
             ]);
         } else {
             return response()->json([
