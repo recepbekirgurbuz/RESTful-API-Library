@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\BooksController;
-use App\Http\Controllers\Api\UserBooksController;
+use App\Http\Controllers\Api\DeliveryController;
 use App\Http\Controllers\Api\UserDetailsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,10 +30,10 @@ Route::controller(UserController::class)->group(function () {
     Route::delete('/user/{id}','deleteUser');
 });
 
-Route::controller(UserBooksController::class)->group(function () {
+Route::controller(DeliveryController::class)->group(function () {
     Route::get('/deliveries', 'listDeliveries');
     Route::post('/delivery', 'createDelivery');
-    Route::get('/delivery/{user_id}', 'showDelivery');
+    Route::get('/delivery/{book_id}', 'showDelivery');
     Route::put('/delivery/{id}', 'updateDelivery');
     Route::delete('/delivery/{id}','deleteDelivery');
 });
