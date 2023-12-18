@@ -3,18 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Book;
-use App\Models\UserBook;
 use Illuminate\Http\Request;
+use App\Models\Book;
+use App\Models\Delivery;
 
-class UserBooksController extends Controller
+class DeliveryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function listDeliveries()
     {
-        $allDelivery = UserBook::all();
+        $allDelivery = Delivery::all();
         if  ($allDelivery) {
             return response()->json([
                 'success' => true,
@@ -33,7 +30,7 @@ class UserBooksController extends Controller
      */
     public function createDelivery(Request $request)
     {
-        $delivery = new UserBook();
+        $delivery = new Delivery();
         $delivery->book_id = $request->book_id;
         $delivery->user_id = $request->user_id;
         $delivery->point = $request->point;
@@ -55,13 +52,13 @@ class UserBooksController extends Controller
     /**
      * Kullanıcı id ile sorgulama yapılacak
      */
-    public function showDelivery(string $user_id)
+    public function showDelivery(string $book_id)
     {
-        $delivery = UserBook::where('user_id', $user_id)->get();
+        $delivery = Delivery::select('book_id', 'user_id', 'point', 'status', 'delivery_date')->where('book_id', $book_id)->get();
         if($delivery){
             return response()->json([
                 'success' => true,
-                'book' => $delivery,
+                'Kitabı alan kullanıcılar' => $delivery,
             ]);
         } else {
             return response()->json([
@@ -76,7 +73,7 @@ class UserBooksController extends Controller
      */
     public function updateDelivery(Request $request, string $id)
     {
-        $delivery = UserBook::findOrFail($id);
+        $delivery = Delivery::findOrFail($id);
         $delivery->book_id = $request->book_id;
         $delivery->user_id = $request->user_id;
         $delivery->point = $request->point;
@@ -100,7 +97,7 @@ class UserBooksController extends Controller
      */
     public function deleteDelivery(string $id)
     {
-        $delivery = UserBook::findOrFail($id);
+        $delivery = Delivery::findOrFail($id);
         $delivery->delete();
         if($delivery->delete()) {
             return response()->json([
