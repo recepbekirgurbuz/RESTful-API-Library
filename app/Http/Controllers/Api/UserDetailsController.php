@@ -27,6 +27,7 @@ class UserDetailsController extends Controller
             ->where('delivery.user_id', $userId)
             ->where('user_id', $userId)
             ->where('delivery.status', 'false')
+            ->orderBy('delivery_date', 'asc')
             ->get();
 
         $userData = [
