@@ -31,38 +31,50 @@ class DeliveryController extends Controller
     public function createDelivery(Request $request)
     {
         $bookId = $request->book_id;
+        $userId = $request->user_id;
+
+        $userDeliveries = Delivery::where('user_id', $userId)
+            ->where('status', false)
+            ->get();
 
         $unreturnedDeliveries = Delivery::where('book_id', $bookId)
             ->where('status', false)
             ->get();
 
-        if ($unreturnedDeliveries->isEmpty()) {
+        if($userDeliveries->isEmpty()) {
+            if ($unreturnedDeliveries->isEmpty()) {
 
-            $delivery = new Delivery();
-            $delivery->book_id = $request->book_id;
-            $delivery->user_id = $request->user_id;
-            $delivery->point = $request->point;
-            $delivery->status = $request->status;
-            $delivery->delivery_date = $request->delivery_date;
+                $delivery = new Delivery();
+                $delivery->book_id = $request->book_id;
+                $delivery->user_id = $request->user_id;
+                $delivery->point = $request->point;
+                $delivery->status = $request->status;
+                $delivery->delivery_date = $request->delivery_date;
 
-            if ($delivery->save()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Ödünç alma işlemi başarıyla gerçekleşti',
-                ]);
+                if ($delivery->save()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Ödünç alma işlemi başarıyla gerçekleşti',
+                    ]);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Ödünç alma işlemi gerçekleşemedi tekrar deneyin'
+                    ]);
+                }
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Ödünç alma işlemi gerçekleşemedi'
+                    'message' => 'Kitap teslim edilmediği için alınmaya uygun değil, ödünç alma işlemi gerçekleşemedi'
                 ]);
             }
+
         } else {
             return response()->json([
-                'success' => false,
-                'message' => 'Kitap teslim edilmediği için alınmaya uygun değil, ödünç alma işlemi gerçekleşemedi'
+                'success'=> false,
+                'message'=> 'Kullanıcının teslim etmediği bir kitap bulunuyor'
             ]);
         }
-
     }
 
     /**
