@@ -15,15 +15,15 @@ class BooksController extends Controller
     public function listBooks()
     {
         $allBooks = Book::all();
-        if($allBooks->count() !== 0) {
-            return response()->json([
-                'success' => true,
-                'Kitaplar' => $allBooks
-            ]);
-        } else {
+        if($allBooks->isEmpty()) {
             return response()->json([
                 'success'=> false,
                 'message'=> 'Üzgünüz, kayıtlı kitap yok'
+            ]);
+        } else {
+            return response()->json([
+                'success' => true,
+                'Kitaplar' => $allBooks
             ]);
         }
 
@@ -60,7 +60,7 @@ class BooksController extends Controller
         $averagePoint = Delivery::where('book_id', $id)->avg('point');
 
         $status = Delivery::where('book_id', $id)->where('status', 'false')->get();
-        if ($status->count() > 0) {
+        if ($status->isEmpty()) {
             $status = 'Kitap teslim edilmedi, Alınmaya uygun değil';
         } else {
             $status = 'Kitap teslim edilmiş, Alınmaya uygun';
