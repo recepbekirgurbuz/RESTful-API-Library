@@ -30,23 +30,39 @@ class DeliveryController extends Controller
      */
     public function createDelivery(Request $request)
     {
-        $delivery = new Delivery();
-        $delivery->book_id = $request->book_id;
-        $delivery->user_id = $request->user_id;
-        $delivery->point = $request->point;
-        $delivery->delivery_date = $request->delivery_date;
-        $delivery->save();
-        if($delivery->save()){
-            return response()->json([
-                'success' => true,
-                'message' => 'Ödünç alma işlemi başarıyla gerçekleşti'
-            ]);
+        $bookId = $request->book_id;
+
+        $unreturnedDeliveries = Delivery::where('book_id', $bookId)
+            ->where('status', false)
+            ->get();
+
+        if ($unreturnedDeliveries->isEmpty()) {
+
+            $delivery = new Delivery();
+            $delivery->book_id = $request->book_id;
+            $delivery->user_id = $request->user_id;
+            $delivery->point = $request->point;
+            $delivery->status = $request->status;
+            $delivery->delivery_date = $request->delivery_date;
+
+            if ($delivery->save()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Ödünç alma işlemi başarıyla gerçekleşti',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Ödünç alma işlemi gerçekleşemedi'
+                ]);
+            }
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Ödünç alma işlemi gerçekleşemedi'
+                'message' => 'Kitap teslim edilmediği için alınmaya uygun değil, ödünç alma işlemi gerçekleşemedi'
             ]);
         }
+
     }
 
     /**
@@ -71,15 +87,10 @@ class DeliveryController extends Controller
     /**
      * Güncellemek veya silmek için sütun id kullanılacak
      */
-    public function updateDelivery(Request $request, string $id)
+    public function updateDelivery(Request $request, $id)
     {
-        $delivery = Delivery::findOrFail($id);
-        $delivery->book_id = $request->book_id;
-        $delivery->user_id = $request->user_id;
-        $delivery->point = $request->point;
-        $delivery->delivery_date = $request->delivery_date;
-        $delivery->update($request->all());
-        if($delivery->update()) {
+        $delivery = Delivery::where('id', $id);
+        if($delivery->update($request->all())) {
             return response()->json([
                 'success' => true,
                 'message' => 'Delivery verileri güncellendi'
@@ -95,11 +106,11 @@ class DeliveryController extends Controller
     /**
      * Güncellemek veya silmek için sütun id kullanılacak
      */
-    public function deleteDelivery(string $id)
+    public function deleteDelivery($id)
     {
         $delivery = Delivery::findOrFail($id);
-        $delivery->delete();
-        if($delivery->delete()) {
+
+        if ($delivery->delete()) {
             return response()->json([
                 'success' => true,
                 'message' => 'Bu ödünç alınan kitap kaydı silindi'
@@ -111,4 +122,5 @@ class DeliveryController extends Controller
             ]);
         }
     }
+
 }
