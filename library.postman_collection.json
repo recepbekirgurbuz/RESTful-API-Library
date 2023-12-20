@@ -7,30 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "kullanıcılar",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/users",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "bir kullanıcının verisi",
+			"name": "all users",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -54,7 +31,7 @@
 			"response": []
 		},
 		{
-			"name": "kullanıcı eklemek",
+			"name": "add user",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -86,13 +63,37 @@
 			"response": []
 		},
 		{
-			"name": "Kullanıcıyı güncellemek",
+			"name": "show user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/user/2",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user",
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"book_id\": 2,\r\n    \"user_id\": 2,\r\n    \"point\": 3,\r\n    \"delivery_date\": \"2028-09-09\"\r\n}\r\n",
+					"raw": "{\r\n    \"name\": \"kullanici adi\",\r\n    \"surname\": \"soyadi\",\r\n    \"tel\": \"05348977755\",\r\n    \"address\": \"İstanbul Ümraniye\",\r\n    \"email\": \"example@mail.com\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -100,7 +101,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/user/1",
+					"raw": "http://127.0.0.1:8000/api/user/5",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -112,19 +113,19 @@
 					"path": [
 						"api",
 						"user",
-						"1"
+						"5"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Kullanıcıyı silmek",
+			"name": "delete user",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/user/1",
+					"raw": "http://127.0.0.1:8000/api/user/3",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -136,14 +137,14 @@
 					"path": [
 						"api",
 						"user",
-						"1"
+						"3"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "kitaplar",
+			"name": "all books",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -166,12 +167,12 @@
 			"response": []
 		},
 		{
-			"name": "bir kitap hakkında bilgi",
+			"name": "show book",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/book/1",
+					"raw": "http://127.0.0.1:8000/api/book/2",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -183,14 +184,14 @@
 					"path": [
 						"api",
 						"book",
-						"1"
+						"2"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "kitap ekleme",
+			"name": "add book",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -222,7 +223,7 @@
 			"response": []
 		},
 		{
-			"name": "kitap güncellemek",
+			"name": "update book",
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -250,7 +251,7 @@
 			"response": []
 		},
 		{
-			"name": "kitap silmek",
+			"name": "delete book",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -274,7 +275,7 @@
 			"response": []
 		},
 		{
-			"name": "Ödünç kitap alan kişiler",
+			"name": "all deliveries",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -297,12 +298,12 @@
 			"response": []
 		},
 		{
-			"name": "ödünç kitap alan kişinin id si",
+			"name": "show delivery",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/delivery/1",
+					"raw": "http://127.0.0.1:8000/api/delivery/2",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -314,20 +315,20 @@
 					"path": [
 						"api",
 						"delivery",
-						"1"
+						"2"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Yeni ödünç kitap alacak kişi",
+			"name": "add delivery",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"book_id\": 2,\r\n    \"user_id\": 2,\r\n    \"point\": 3,\r\n    \"delivery_date\": \"2023-09-09\"\r\n}\r\n",
+					"raw": "{\r\n    \"book_id\": 3,\r\n    \"user_id\": 2,\r\n    \"point\": null,\r\n    \"status\": false,\r\n    \"delivery_date\": \"2023-09-09\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -353,16 +354,21 @@
 			"response": []
 		},
 		{
-			"name": "alınan ödünç kitapları düzenlemek",
+			"name": "update delivery",
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"book_id\": 2,\r\n    \"user_id\": 2,\r\n    \"point\": 3,\r\n    \"delivery_date\": \"2028-09-09\"\r\n}\r\n"
+					"raw": "{\r\n    \"point\": \"2\",\r\n    \"status\": \"false\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/delivery/1",
+					"raw": "http://127.0.0.1:8000/api/delivery/2",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -374,31 +380,7 @@
 					"path": [
 						"api",
 						"delivery",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "ödünç alınan kitap hakkındaki veriyi siler",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:8000/api/delivery/1",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"api",
-						"delivery",
-						"1"
+						"2"
 					]
 				}
 			},
