@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use App\Models\Book;
+use App\Models\Delivery;
 class UserController extends Controller
 {
 
@@ -15,13 +16,13 @@ class UserController extends Controller
         if  ($allUsers) {
             return response()->json([
                 'success' => true,
-                'Kullanıcılar' => $allUsers
-            ]);
+                'Users' => $allUsers
+            ], 200);
         } else {
             return response()->json([
                 'success'=> false,
-                'message'=> 'Kullanıcı oluşturulmamış'
-            ]);
+                'message'=> 'Böyle bir kullanıcı bulunamadı'
+            ], 204);
         }
     }
 
@@ -33,34 +34,37 @@ class UserController extends Controller
         $user->tel = $request->tel;
         $user->address = $request->address;
         $user->email = $request->email;
-        $user->save();
         if($user->save()){
             return response()->json([
                 'success' => true,
                 'message' => 'Kullanıcı başarıyla kayıt edildi'
-            ]);
+            ], 201);
         }else{
             return response()->json([
                 'success' => false,
                 'message' => 'Kullanıcı kayıt edilemedi'
-            ]);
+            ], 400);
         }
     }
 
-    public function showUser($id)
+    public function showUser($userId)
     {
-        $user = User::find($id);
-        if  ($user) {
-            return response()->json([
-                'success' => true,
-                'Kullancı Bilgileri' => $user
-            ]);
-        } else {
-            return response()->json([
-                'success' => true,
-                'message' => 'böyle bir kullanıcı mevcut değil'
-            ]);
+        $user = User::select('name', 'surname', 'address', 'tel')->find($userId);
+        if (!$user) {
+            return response()->json(['error' => 'No such user found'], 204);
         }
+
+        $userBooks = Delivery::select('book_name', 'point', 'status')
+            ->join('books', 'delivery.book_id', 'books.id')
+            ->where('user_id', $userId)
+            ->get();
+
+        $userData = [
+            'user_info' => $user,
+            'books' => $userBooks
+        ];
+
+        return response()->json($userData, 200);
     }
 
     public function updateUser(Request $request, $id)
@@ -71,11 +75,14 @@ class UserController extends Controller
         $user->tel = $request->tel;
         $user->address = $request->address;
         $user->email = $request->email;
-        $user->update($request->all());
-        return response()->json([
-            'success' => true,
-            'Güncellenen Kullanıcı' => $user
-        ]);
+        if($user->update($request->all())) {
+            return response()->json([
+                'success' => true,
+                'Güncellenen Kullanıcı' => $user
+            ], 200);
+        } else {
+            return response()->json(['error'=> ''], 400);
+        }
     }
 
     public function deleteUser($id)
@@ -84,8 +91,8 @@ class UserController extends Controller
         $user->delete();
         return response()->json([
             'success' => true,
-            'message' => 'Kullanıcı başarıyla silindi'
-        ]);
+            'message' => 'User deleted'
+        ], 204);
 
     }
 }

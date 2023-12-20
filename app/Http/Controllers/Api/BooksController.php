@@ -19,12 +19,12 @@ class BooksController extends Controller
             return response()->json([
                 'success'=> false,
                 'message'=> 'Üzgünüz, kayıtlı kitap yok'
-            ]);
+            ], 204);
         } else {
             return response()->json([
                 'success' => true,
                 'Kitaplar' => $allBooks
-            ]);
+            ], 200);
         }
 
     }
@@ -37,17 +37,16 @@ class BooksController extends Controller
         $book = new Book();
         $book->book_name = $request->book_name;
         $book->author = $request->author;
-        $book->save();
         if($book->save()) {
             return response()->json([
                 'success' => true,
                 'message' => "Kitap başarıyla eklendi"
-            ]);
+            ], 201);
         } else {
             return response()->json([
                 'success' => false,
                 'message' => "Maalesef kitap eklenemedi"
-            ]);
+            ], 400);
         }
     }
 
@@ -89,17 +88,16 @@ class BooksController extends Controller
         $book = Book::findOrFail($id);
         $book->book_name = $request->book_name;
         $book->author = $request->author;
-        $book->update($request->all());
-        if($book->update()){
+        if($book->update($request->all())){
             return response()->json([
                 'success' => true,
                 'message' => "kitap bilgileri başarıyla güncellendi"
-            ]);
+            ], 200);
         } else {
             return response()->json([
                 'success' => false,
                 'message' => "kitap bilgileri maalesef güncellenemedi"
-            ]);
+            ], 400);
         }
     }
 
@@ -114,12 +112,12 @@ class BooksController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => "kitap başarıyla silindi"
-            ]);
+            ], 204);
         } else {
             return response()->json([
                 'success' => false,
                 'message' => "kitap silinemedi"
-            ]);
+            ], 400);
         }
     }
 }

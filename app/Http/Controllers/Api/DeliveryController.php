@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Book;
 use App\Models\Delivery;
 
 class DeliveryController extends Controller
@@ -16,12 +15,12 @@ class DeliveryController extends Controller
             return response()->json([
                 'success' => true,
                 'Ödünç Alınmış ve Alınan Kitaplar' => $allDelivery
-            ]);
+            ], 200);
         } else {
             return response()->json([
                 'success'=> false,
                 'message'=> 'Ödünç kitap alınmamış'
-            ]);
+            ], 204);
         }
     }
 
@@ -42,8 +41,8 @@ class DeliveryController extends Controller
             ->get();
 
         if($userDeliveries->isEmpty()) {
-            if ($unreturnedDeliveries->isEmpty()) {
 
+            if ($unreturnedDeliveries->isEmpty()) {
                 $delivery = new Delivery();
                 $delivery->book_id = $request->book_id;
                 $delivery->user_id = $request->user_id;
@@ -55,25 +54,24 @@ class DeliveryController extends Controller
                     return response()->json([
                         'success' => true,
                         'message' => 'Ödünç alma işlemi başarıyla gerçekleşti',
-                    ]);
+                    ], 200);
                 } else {
                     return response()->json([
                         'success' => false,
                         'message' => 'Ödünç alma işlemi gerçekleşemedi tekrar deneyin'
-                    ]);
+                    ], 400);
                 }
             } else {
                 return response()->json([
                     'success' => false,
                     'message' => 'Kitap teslim edilmediği için alınmaya uygun değil, ödünç alma işlemi gerçekleşemedi'
-                ]);
+                ], 400);
             }
-
         } else {
             return response()->json([
                 'success'=> false,
                 'message'=> 'Kullanıcının teslim etmediği bir kitap bulunuyor'
-            ]);
+            ], 400);
         }
     }
 
@@ -87,12 +85,12 @@ class DeliveryController extends Controller
             return response()->json([
                 'success' => true,
                 'Kitabı alan kullanıcılar' => $delivery,
-            ]);
+            ], 200);
         } else {
             return response()->json([
                 'success' => false,
                 'message'=> 'Ödünç kitap bulunamadı'
-            ]);
+            ], 204);
         }
     }
 
@@ -106,33 +104,12 @@ class DeliveryController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Delivery verileri güncellendi'
-            ]);
+            ], 200);
         } else {
             return response()->json([
                 'success' => false,
                 'message' => 'Maalesef delivery verileri güncellenemedi'
-            ]);
+            ], 400);
         }
     }
-
-    /**
-     * Güncellemek veya silmek için sütun id kullanılacak
-     */
-    public function deleteDelivery($id)
-    {
-        $delivery = Delivery::findOrFail($id);
-
-        if ($delivery->delete()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Bu ödünç alınan kitap kaydı silindi'
-            ]);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Ödünç alınan kitap kaydı silinemedi'
-            ]);
-        }
-    }
-
 }
