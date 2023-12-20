@@ -35,7 +35,6 @@ Route::controller(DeliveryController::class)->group(function () {
     Route::post('/delivery', 'createDelivery');
     Route::get('/delivery/{book_id}', 'showDelivery');
     Route::put('/delivery/{id}', 'updateDelivery');
-    Route::delete('/delivery/{id}','deleteDelivery');
 });
 
 Route::controller(BooksController::class)->group(function () {
@@ -44,8 +43,4 @@ Route::controller(BooksController::class)->group(function () {
     Route::get('/book/{id}', 'showBook');
     Route::put('/book/{id}', 'updateBook');
     Route::delete('/book/{id}', 'deleteBook');
-});
-
-Route::controller(UserDetailsController::class)->group(function () {
-    Route::get('/userdetails/{id}', 'userDetails');
 });
