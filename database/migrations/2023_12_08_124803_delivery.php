@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('book_id');
             $table->integer('user_id');
-            $table->integer('point');
+            $table->integer('point')->nullable;
             $table->text('status');
             $table->date('delivery_date');
             $table->timestamps();
