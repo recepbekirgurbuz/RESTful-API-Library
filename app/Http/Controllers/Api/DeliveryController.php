@@ -10,16 +10,31 @@ class DeliveryController extends Controller
 {
     public function listDeliveries()
     {
-        $allDelivery = Delivery::all();
-        if  ($allDelivery) {
+        $deliveries = Delivery::all();
+
+        if ($deliveries->isNotEmpty()) {
+            $responseData = [];
+
+            foreach ($deliveries as $delivery) {
+                $responseData[] = [
+                    'delivery_id' => $delivery->id,
+                    'point' => $delivery->point,
+                    'status' => $delivery->status,
+                    'delivery_date' => $delivery->delivery_date,
+                    'books' => $delivery->getAllBook,
+                    'user' =>  $delivery->getAllUser,
+                ];
+            }
             return response()->json([
                 'success' => true,
-                'Ödünç Alınmış ve Alınan Kitaplar' => $allDelivery
+                'deliveries' => $responseData,
             ], 200);
-        } else {
+        }
+
+        else {
             return response()->json([
-                'success'=> false,
-                'message'=> 'Ödünç kitap alınmamış'
+                'success' => false,
+                'message'=> 'Ödünç kitap bulunamadı'
             ], 204);
         }
     }
@@ -78,13 +93,17 @@ class DeliveryController extends Controller
     /**
      * Kullanıcı id ile sorgulama yapılacak
      */
-    public function showDelivery(string $book_id)
+    public function showDelivery($book_id)
     {
-        $delivery = Delivery::select('book_id', 'user_id', 'point', 'status', 'delivery_date')->where('book_id', $book_id)->get();
-        if($delivery){
+        $delivery = Delivery::find($book_id);
+
+        if ($delivery) {
             return response()->json([
                 'success' => true,
-                'Kitabı alan kullanıcılar' => $delivery,
+                'delivery_id' => $delivery->id,
+                'status' => $delivery->status,
+                'books' => $delivery->getBook,
+                'user' =>  $delivery->getUser,
             ], 200);
         } else {
             return response()->json([
