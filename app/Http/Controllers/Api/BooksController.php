@@ -14,7 +14,8 @@ class BooksController extends Controller
      */
     public function listBooks()
     {
-        $allBooks = Book::all();
+        $allBooks = Book::select('book_name', 'author')->get();
+
         if($allBooks->isEmpty()) {
             return response()->json([
                 'success'=> false,
@@ -23,10 +24,9 @@ class BooksController extends Controller
         } else {
             return response()->json([
                 'success' => true,
-                'Kitaplar' => $allBooks
+                'Kitaplar' => $allBooks,
             ], 200);
         }
-
     }
 
     /**
@@ -53,7 +53,7 @@ class BooksController extends Controller
     /**
      * kitap id si ile kitap bilgilerini çeker
      */
-    public function showBook(string $id)
+    public function showBook($id)
     {
         $book = Book::select('book_name', 'author')->find($id);
         $averagePoint = Delivery::where('book_id', $id)->avg('point');
@@ -83,7 +83,7 @@ class BooksController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function updateBook(Request $request, string $id)
+    public function updateBook(Request $request, $id)
     {
         $book = Book::findOrFail($id);
         $book->book_name = $request->book_name;
@@ -103,8 +103,8 @@ class BooksController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     */
-    public function deleteBook(string $id)
+    */
+    public function deleteBook($id)
     {
         $book = Book::findOrFail($id);
         $book->delete();
