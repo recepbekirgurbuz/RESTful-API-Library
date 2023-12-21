@@ -11,6 +11,34 @@ class UserController extends Controller
 
     public function listUsers()
     {
+        $users = User::all();
+
+        if ($users->isNotEmpty()) {
+            $responseData = [];
+            foreach ($users as $user) {
+                $responseData[] = [
+                    'user_id' => $user->id,
+                    'name' => $user->name,
+                    'surname' => $user->surname,
+                    'email' => $user->email,
+                    'tel' => $user->tel,
+                    'address' => $user->address,
+                    'delivery_book' => $user->getAllDelivery,
+                ];
+            }
+            return response()->json([
+                'success' => true,
+                'users' => $responseData,
+            ], 200);
+        }
+
+        else {
+            return response()->json([
+                'success' => false,
+                'message'=> 'Ödünç kitap bulunamadı'
+            ], 204);
+        }
+        /*
         $allUsers = User::all();
         if  ($allUsers) {
             return response()->json([
@@ -23,6 +51,7 @@ class UserController extends Controller
                 'message'=> 'Böyle bir kullanıcı bulunamadı'
             ], 204);
         }
+        */
     }
 
     public function createUser(Request $request)

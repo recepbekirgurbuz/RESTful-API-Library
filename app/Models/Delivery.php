@@ -20,10 +20,10 @@ class Delivery extends Model
     }
 
     public function getBook() {
-        return $this->hasOne(Book::class, 'id', 'book_id');
+        return $this->hasOne(Book::class, 'id', 'book_id')->select('book_name', 'author');
     }
 
     public function getUser() {
-        return $this->hasOne(User::class, 'id', 'user_id');
+        return $this->hasOne(User::class, 'id', 'user_id')->select('name', 'surname', 'address', 'tel', 'email');
     }
 }

@@ -101,6 +101,7 @@ class DeliveryController extends Controller
             return response()->json([
                 'success' => true,
                 'delivery_id' => $delivery->id,
+                'delivery_date' => $delivery->delivery_date,
                 'status' => $delivery->status,
                 'books' => $delivery->getBook,
                 'user' =>  $delivery->getUser,

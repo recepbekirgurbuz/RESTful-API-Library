@@ -14,18 +14,30 @@ class BooksController extends Controller
      */
     public function listBooks()
     {
-        $allBooks = Book::select('book_name', 'author')->get();
+        $books = Book::all();
 
-        if($allBooks->isEmpty()) {
-            return response()->json([
-                'success'=> false,
-                'message'=> 'Üzgünüz, kayıtlı kitap yok'
-            ], 204);
-        } else {
+        if ($books->isNotEmpty()) {
+            $responseData = [];
+
+            foreach ($books as $book) {
+                $responseData[] = [
+                    'book_id' => $book->id,
+                    'book_name' => $book->book_name,
+                    'author' => $book->author,
+                    'delivery' =>  $book->getAllDelivery,
+                ];
+            }
             return response()->json([
                 'success' => true,
-                'Kitaplar' => $allBooks,
+                'books' => $responseData,
             ], 200);
+        }
+
+        else {
+            return response()->json([
+                'success' => false,
+                'message'=> 'Ödünç kitap bulunamadı'
+            ], 204);
         }
     }
 
