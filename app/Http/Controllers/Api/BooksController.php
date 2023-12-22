@@ -12,6 +12,14 @@ class BooksController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function getAllDelivery()
+    {
+        // Belirli bir kitaba ait 'status' değeri 'false' olan tüm teslimatları al
+        return $this->hasMany(Delivery::class, 'book_id', 'id')
+            ->where('status', 'false')
+            ->get();
+    }
+
     public function listBooks()
     {
         $books = Book::all();
@@ -20,23 +28,24 @@ class BooksController extends Controller
             $responseData = [];
 
             foreach ($books as $book) {
+                $deliveries = $book->getAllDelivery();
+
                 $responseData[] = [
                     'book_id' => $book->id,
                     'book_name' => $book->book_name,
                     'author' => $book->author,
-                    'delivery' =>  $book->getAllDelivery,
+                    'delivery' => $deliveries
                 ];
             }
+
             return response()->json([
                 'success' => true,
                 'books' => $responseData,
             ], 200);
-        }
-
-        else {
+        } else {
             return response()->json([
                 'success' => false,
-                'message'=> 'Ödünç kitap bulunamadı'
+                'message' => 'Hiç kitap bulunamadı',
             ], 204);
         }
     }
@@ -67,28 +76,20 @@ class BooksController extends Controller
      */
     public function showBook($id)
     {
-        $book = Book::select('book_name', 'author')->find($id);
-        $averagePoint = Delivery::where('book_id', $id)->avg('point');
+        $book = Book::find($id);
+        $delivery = $book->getDelivery();
 
-        $status = Delivery::where('book_id', $id)->where('status', 'false')->get();
-        if ($status->isEmpty()) {
-            $status = 'Kitap teslim edilmedi, Alınmaya uygun değil';
-        } else {
-            $status = 'Kitap teslim edilmiş, Alınmaya uygun';
-        }
-
-        if($book){
+        if ($book) {
             return response()->json([
                 'success' => true,
                 'book' => $book,
-                'averagePoint' => $averagePoint,
-                'delivery_status' => $status
-            ]);
+                'kitap_bu_kullanıcıda' => $delivery,
+            ], 200);
         } else {
             return response()->json([
                 'success' => false,
-                'message'=> 'Üzgünüz böyle bir kitap bulunamadı'
-            ]);
+                'message'=> 'Ödünç kitap bulunamadı'
+            ], 204);
         }
     }
 

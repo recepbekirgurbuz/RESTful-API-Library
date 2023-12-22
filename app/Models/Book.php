@@ -12,8 +12,35 @@ class Book extends Model
     protected $primaryKey = 'id';
 
     public function getAllDelivery() {
-        return $this->hasMany(Delivery::class, 'user_id', 'id')
-        ->select('book_id', 'user_id', 'point', 'status', 'delivery_date')
-        ->where('status', 'false');
+        $deliveries = $this->hasMany(Delivery::class, 'book_id', 'id')
+            ->where('status', 'false')
+            ->get();
+
+        $userNames = [];
+
+        foreach ($deliveries as $delivery) {
+            $user = User::find($delivery->user_id);
+
+            if ($user) {
+                $userNames[] = $user->name;
+            }
+        }
+
+        return $userNames;
+    }
+
+
+    public function getDelivery() {
+        $delivery = $this->hasOne(Delivery::class, 'book_id', 'id')
+            ->where('status', 'false')
+            ->first();
+        if ($delivery) {
+            $user = User::find($delivery->user_id);
+
+            if ($user) {
+                return $user->name;
+            }
+        }
+        return null;
     }
 }
