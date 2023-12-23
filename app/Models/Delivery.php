@@ -26,4 +26,9 @@ class Delivery extends Model
     public function getUser() {
         return $this->hasOne(User::class, 'id', 'user_id')->select('name', 'surname', 'address', 'tel', 'email');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

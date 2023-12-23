@@ -12,8 +12,6 @@ class User extends Model
     protected $primaryKey = 'id';
 
     public function getAllDelivery() {
-        return $this->hasMany(Delivery::class, 'user_id', 'id')
-        ->select('book_id', 'user_id', 'point', 'status', 'delivery_date')
-        ->where('status', 'false');
+        return $this->hasMany(Delivery::class, 'user_id')->where('status', 'false');
     }
 }

@@ -12,29 +12,29 @@ class BooksController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function getAllDelivery()
-    {
-        // Belirli bir kitaba ait 'status' değeri 'false' olan tüm teslimatları al
-        return $this->hasMany(Delivery::class, 'book_id', 'id')
-            ->where('status', 'false')
-            ->get();
-    }
-
     public function listBooks()
     {
-        $books = Book::all();
+        // Tüm kitapları al, ve ilişkili teslimatları ön yükle
+        $books = Book::with('deliveries.user')->get();
 
         if ($books->isNotEmpty()) {
             $responseData = [];
-
             foreach ($books as $book) {
-                $deliveries = $book->getAllDelivery();
+                $deliveriesData = [];
+                foreach ($book->deliveries as $delivery) {
+                    $deliveriesData[] = [
+                        'status' => $delivery->status,
+                        'delivery_date' => $delivery->delivery_date,
+                        'user_id' => $delivery->user->id,
+                        'name' => $delivery->user->name,
+                        'surname' => $delivery->user->surname,
+                    ];
+                }
 
                 $responseData[] = [
                     'book_id' => $book->id,
                     'book_name' => $book->book_name,
-                    'author' => $book->author,
-                    'delivery' => $deliveries
+                    'deliveries' => $deliveriesData,
                 ];
             }
 
@@ -45,10 +45,11 @@ class BooksController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Hiç kitap bulunamadı',
+                'message' => 'Kayıtlı kitap yok',
             ], 204);
         }
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -74,23 +75,23 @@ class BooksController extends Controller
     /**
      * kitap id si ile kitap bilgilerini çeker
      */
-    public function showBook($id)
+    public function showBook($deliveryId)
     {
-        $book = Book::find($id);
-        $delivery = $book->getDelivery();
+        $delivery = Delivery::find($deliveryId);
 
-        if ($book) {
-            return response()->json([
-                'success' => true,
-                'book' => $book,
-                'kitap_bu_kullanıcıda' => $delivery,
-            ], 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message'=> 'Ödünç kitap bulunamadı'
-            ], 204);
-        }
+        $deliveringUser = $delivery->user;
+        $deliveredBook = $delivery->book;
+
+        return response()->json([
+            'success' => true,
+            'book_name' => $deliveredBook->book_name,
+            'author' => $deliveredBook->author,
+            'delivery' => [
+                'user_id' => $deliveringUser->id,
+                'name' => $deliveringUser->name,
+                'surname' => $deliveringUser->surname,
+            ]
+        ], 200);
     }
 
     /**

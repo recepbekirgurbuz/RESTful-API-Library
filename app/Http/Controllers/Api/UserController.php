@@ -35,23 +35,9 @@ class UserController extends Controller
         else {
             return response()->json([
                 'success' => false,
-                'message'=> 'Ödünç kitap bulunamadı'
+                'message'=> 'Ödünç kullanıcı bulunamadı'
             ], 204);
         }
-        /*
-        $allUsers = User::all();
-        if  ($allUsers) {
-            return response()->json([
-                'success' => true,
-                'Users' => $allUsers
-            ], 200);
-        } else {
-            return response()->json([
-                'success'=> false,
-                'message'=> 'Böyle bir kullanıcı bulunamadı'
-            ], 204);
-        }
-        */
     }
 
     public function createUser(Request $request)
