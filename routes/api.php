@@ -1,11 +1,12 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\BooksController;
 use App\Http\Controllers\Api\DeliveryController;
-use App\Http\Controllers\Api\UserDetailsController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,4 +44,10 @@ Route::controller(BooksController::class)->group(function () {
     Route::get('/book/{id}', 'showBook');
     Route::put('/book/{id}', 'updateBook');
     Route::delete('/book/{id}', 'deleteBook');
+});
+
+Route::controller(AuthController::class)->group(function () {
+    Route::post('/login', 'login');
+    Route::post('/register', 'register');
+    Route::get('/logout', 'logout');
 });

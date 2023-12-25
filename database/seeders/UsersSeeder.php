@@ -18,7 +18,8 @@ class UsersSeeder extends Seeder
             'surname' => 'gurbuz',
             'tel' => '05132890123',
             'address' => 'Istanbul Pendik',
-            'email' => 'recep@mail.com'
+            'email' => 'recep@mail.com',
+            'password' => 'recep123',
         ]);
 
         User::create([
@@ -26,7 +27,8 @@ class UsersSeeder extends Seeder
             'surname' => 'gurbuz',
             'tel' => '05132312299',
             'address' => 'Istanbul Maltepe',
-            'email' => 'bekir@mail.com'
+            'email' => 'bekir@mail.com',
+            'password' => 'bekir123',
         ]);
     }
 }
