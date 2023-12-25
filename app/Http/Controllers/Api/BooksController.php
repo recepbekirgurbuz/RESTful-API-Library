@@ -79,17 +79,14 @@ class BooksController extends Controller
     {
         $delivery = Delivery::find($deliveryId);
 
-        $deliveringUser = $delivery->user;
-        $deliveredBook = $delivery->book;
-
         return response()->json([
             'success' => true,
-            'book_name' => $deliveredBook->book_name,
-            'author' => $deliveredBook->author,
+            'book_name' => $delivery->book->book_name,
+            'author' => $delivery->book->author,
             'delivery' => [
-                'user_id' => $deliveringUser->id,
-                'name' => $deliveringUser->name,
-                'surname' => $deliveringUser->surname,
+                'user_id' => $delivery->user->id,
+                'name' => $delivery->user->name,
+                'surname' => $delivery->user->surname,
             ]
         ], 200);
     }

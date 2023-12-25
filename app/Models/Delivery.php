@@ -13,18 +13,18 @@ class Delivery extends Model
     protected $primaryKey = 'id';
 
     public function getAllBook() {
-        return $this->hasMany(Book::class,'id','book_id')->select('book_name', 'author');
+        return $this->hasMany(Book::class,'id','book_id')->select('id', 'book_name', 'author');
     }
     public function getAllUser() {
-        return $this->hasMany(User::class, 'id', 'user_id')->select('name', 'surname', 'address', 'tel', 'email');
+        return $this->hasMany(User::class, 'id', 'user_id')->select('id', 'name', 'surname', 'address', 'tel', 'email');
     }
 
     public function getBook() {
-        return $this->hasOne(Book::class, 'id', 'book_id')->select('book_name', 'author');
+        return $this->hasOne(Book::class, 'id', 'book_id')->select('id', 'book_name', 'author');
     }
 
     public function getUser() {
-        return $this->hasOne(User::class, 'id', 'user_id')->select('name', 'surname', 'address', 'tel', 'email');
+        return $this->hasOne(User::class, 'id', 'user_id')->select('id', 'name', 'surname', 'address', 'tel', 'email');
     }
 
     public function user()
