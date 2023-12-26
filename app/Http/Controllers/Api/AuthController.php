@@ -17,11 +17,17 @@ class AuthController extends Controller
 
         if(Auth::attempt($data)) {
         // login success
-            return redirect("home")->with('login', 'logged in');
+            return response()->json([
+                'success' => true,
+                'message' => 'Logged in'
+            ], 201);
         }
         else {
         // login fail
-            return redirect()->back()->with('login','login failed');
+            return response()->json([
+                'success' => false,
+                'message' => 'Login failed'
+            ], 401);
         }
     }
 
@@ -29,17 +35,31 @@ class AuthController extends Controller
         Register
     */
     public function register(Request $request) {
-        User::create([
-            'name' => $request->input('name'),
-            'surname' => $request->input('surname'),
-            'address' => $request->input('address'),
-            'tel' => $request->input('tel'),
-            'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
+        $request->validate([
+            'name' => 'required|string',
+            'surname' => 'required|string',
+            'tel' => 'required|string',
+            'address' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:6',
         ]);
 
-        return redirect('login')->with('register', 'registered');
+        User::create([
+            'name' => $request->name,
+            'surname' => $request->surname,
+            'tel' => $request->tel,
+            'address' => $request->address,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User registered successfully',
+        ], 201);
     }
+
+
 
     /*
         Logout
@@ -52,6 +72,9 @@ class AuthController extends Controller
             ], 200);
         }
 
-        return redirect(route('login'))->with('login', 'logged out');
+        return response()->json([
+            'success' => true,
+            'message' => 'Logged out',
+        ], 201);
     }
 }
