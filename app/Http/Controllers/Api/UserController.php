@@ -40,27 +40,6 @@ class UserController extends Controller
         }
     }
 
-    public function createUser(Request $request)
-    {
-        $user = new User();
-        $user->name = $request->name;
-        $user->surname = $request->surname;
-        $user->tel = $request->tel;
-        $user->address = $request->address;
-        $user->email = $request->email;
-        if($user->save()){
-            return response()->json([
-                'success' => true,
-                'message' => 'Kullanıcı başarıyla kayıt edildi'
-            ], 201);
-        }else{
-            return response()->json([
-                'success' => false,
-                'message' => 'Kullanıcı kayıt edilemedi'
-            ], 400);
-        }
-    }
-
     public function showUser($userId)
     {
         $user = User::select('name', 'surname', 'address', 'tel')->find($userId);
