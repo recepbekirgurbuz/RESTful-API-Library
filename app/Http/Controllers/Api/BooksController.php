@@ -15,7 +15,7 @@ class BooksController extends Controller
     public function listBooks()
     {
         // Tüm kitapları al, ve ilişkili teslimatları ön yükle
-        $books = Book::with('deliveries.user')->get();
+        $books = Book::all();
 
         if ($books->isNotEmpty()) {
             $responseData = [];
