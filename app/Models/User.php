@@ -2,10 +2,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Delivery;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -17,7 +19,9 @@ class User extends Authenticatable
     public function getAllDelivery() {
         return $this->hasMany(Delivery::class, 'user_id')->where('status', 'false');
     }
-
+    public function delivery(): HasMany {
+        return $this->hasMany(Delivery::class, 'user_id', 'id');
+    }
     /**
      * The attributes that are mass assignable.
      *
