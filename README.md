@@ -27,6 +27,8 @@
 
 # Kurulum
 ### komut istemcisinden klasörün olduğu dizine gidin
+### Composer İndirin
+- composer install
 ### database oluşturmak
 - php artisan migrate
 ### database'i veriler ile doldurmak 
