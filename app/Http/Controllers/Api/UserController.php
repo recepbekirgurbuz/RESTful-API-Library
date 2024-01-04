@@ -11,8 +11,18 @@ class UserController extends Controller
 
     public function listUsers()
     {
-        $users = User::all();
+        // //$users = User::with(["delivery:id,user_id,book_id"])->get()->toArray();   // belongto
 
+        // $users = User::with(["delivery"=>function($query){
+        //     return $query->with(["book"])->select("id", "book_id", "user_id")->orderBy('book_id', 'DESC')->get();
+        // }])->get()->toArray();
+
+        //     return response()->json([
+        //         $users
+        //     ], 200);
+        // hasmany
+
+        $users = User::all();
         if ($users->isNotEmpty()) {
             $responseData = [];
             foreach ($users as $user) {
@@ -38,6 +48,7 @@ class UserController extends Controller
                 'message'=> 'Ödünç kullanıcı bulunamadı'
             ], 204);
         }
+
     }
 
     public function showUser($userId)
