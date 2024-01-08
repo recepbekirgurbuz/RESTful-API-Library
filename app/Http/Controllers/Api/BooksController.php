@@ -19,8 +19,10 @@ class BooksController extends Controller
 
         if ($books->isNotEmpty()) {
             $responseData = [];
+
             foreach ($books as $book) {
-                $deliveriesData = [];
+                $deliveriesData = []; // Her kitap için deliveriesData'nın sıfırlanması
+
                 foreach ($book->deliveries as $delivery) {
                     $deliveriesData[] = [
                         'status' => $delivery->status,
@@ -34,6 +36,7 @@ class BooksController extends Controller
                 $responseData[] = [
                     'book_id' => $book->id,
                     'book_name' => $book->book_name,
+                    'author' => $book->author,
                     'deliveries' => $deliveriesData,
                 ];
             }
@@ -48,6 +51,7 @@ class BooksController extends Controller
                 'message' => 'Kayıtlı kitap yok',
             ], 204);
         }
+
     }
 
 
