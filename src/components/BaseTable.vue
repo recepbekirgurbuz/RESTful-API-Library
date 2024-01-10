@@ -12,8 +12,8 @@
         <slot :row="item">
           <td v-for="(column, index) in columns" :key="index" v-if="hasValue(item, column)">
             <!-- Check if the column is a link -->
-            <a v-if="column === 'link'" :href="'/book/' + itemValue(item, column)">
-              {{ itemValue(item, column) }}
+            <a v-if="column === 'deliveries'" :href="'/user/'+itemValue(item, column)[0].id">
+              {{ itemValue(item, column)[0].name+" "+itemValue(item, column)[0].surname}}
             </a>
             <!-- If not a link, display regular text -->
             <span v-else>
