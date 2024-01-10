@@ -16,9 +16,17 @@ class User extends Authenticatable
     protected $table = 'users'; // Veritabanındaki tablo adını belirtin
     protected $primaryKey = 'id'; // Primary key'i belirtin (varsayılan olarak 'id')
 
-    public function getAllDelivery() {
-        return $this->hasMany(Delivery::class, 'user_id')->where('status', 'false');
-    }
+  // User modelindeki ilişkiler
+  public function deliveries() {
+    return $this->hasMany(Delivery::class, 'user_id');
+  }
+
+  public function books() {
+    return $this->hasManyThrough(Book::class, Delivery::class, 'user_id', 'id', 'id', 'book_id');
+  }
+  public function active() {
+    return $this->hasManyThrough(Book::class, Delivery::class, 'user_id', 'id', 'id', 'book_id')->where('status', 'false');
+  }
     public function delivery(): HasMany {
         return $this->hasMany(Delivery::class, 'user_id', 'id');
     }

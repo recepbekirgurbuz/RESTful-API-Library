@@ -25,11 +25,8 @@ class BooksController extends Controller
 
                 foreach ($book->deliveries as $delivery) {
                     $deliveriesData[] = [
-                        'status' => $delivery->status,
-                        'delivery_date' => $delivery->delivery_date,
-                        'user_id' => $delivery->user->id,
-                        'name' => $delivery->user->name,
-                        'surname' => $delivery->user->surname,
+                      'name' => $delivery->user->name,
+                      'surname' => $delivery->user->surname,
                     ];
                 }
 
@@ -79,21 +76,38 @@ class BooksController extends Controller
     /**
      * kitap id si ile kitap bilgilerini çeker
      */
-    public function showBook($deliveryId)
+    public function showBook($book_id)
     {
-        $delivery = Delivery::find($deliveryId);
+        $book = Book::find($book_id);
 
-        return response()->json([
-            'success' => true,
-            'book_name' => $delivery->book->book_name,
-            'author' => $delivery->book->author,
-            'delivery' => [
-                'user_id' => $delivery->user->id,
-                'name' => $delivery->user->name,
-                'surname' => $delivery->user->surname,
-            ]
-        ], 200);
+        if ($book !== null) {
+            $responseData = [
+                'book_id' => $book->id,
+                'book_name' => $book->book_name,
+                'author' => $book->author,
+                'deliveries' => [],
+            ];
+
+            foreach ($book->deliveries as $delivery) {
+                $responseData['deliveries'][] = [
+                    'id' => $delivery->user->id,
+                    'name' => $delivery->user->name,
+                    'surname' => $delivery->user->surname,
+                ];
+            }
+
+            return response()->json([
+                'success' => true,
+                'books' => [$responseData], // Books'ı bir dizi içinde döndür
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kitap bulunamadı',
+            ], 404); // 204 yerine 404 status kodu kullanmak daha uygundur
+        }
     }
+
 
     /**
      * Update the specified resource in storage.
