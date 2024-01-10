@@ -6,11 +6,11 @@ import DashboardLayout from "@/layout/dashboard/DashboardLayout.vue";
 import NotFound from "@/pages/NotFoundPage.vue";
 
 const Dashboard = () => import("@/pages/Dashboard.vue");
-const Profile = () => import("@/pages/Profile.vue");
-const Notifications = () => import("@/pages/Notifications.vue");
+const Books = () => import("@/pages/Books.vue");
+const Users = () => import("@/pages/Users.vue");
 const Icons = () => import("@/pages/Icons.vue");
-const Typography = () => import("@/pages/Typography.vue");
-const TableList = () => import("@/pages/TableList.vue");
+const BookList = () => import("@/pages/BookList.vue");
+const UserList = () => import("@/pages/UserList.vue");
 
 Vue.use(VueRouter);
 
@@ -21,10 +21,13 @@ const routes = [
     redirect: "/dashboard",
     children: [
       { path: "dashboard", name: "dashboard", component: Dashboard },
-      { path: "profile", name: "profile", component: Profile },
-      { path: "notifications", name: "notifications", component: Notifications },
-      { path: "icons", name: "icons", component: Icons },
-      { path: "table-list", name: "table-list", component: TableList }
+      { path: "books", name: "books", component: Books },
+      { path: "users", name: "users", component: Users },
+
+      { path: "book/:id", name: "Books", component: BookList },
+      { path: "user/:id", name: "Users", component: UserList },
+      { path: "delivery/:id", name: "icons", component: Icons },
+
     ]
   },
   { path: "*", component: NotFound },
